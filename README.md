@@ -1,4 +1,4 @@
-### Sistema-Gerenciamento-de-refrigeracao
+# Sistema-Gerenciamento-de-refrigeracao
 
 ## Requisitos funcionais:
 
@@ -29,15 +29,15 @@ O sistema deve comunicar os alertas e status de manutencao com icone ou texto co
 
 ## Regras de negócio
 
-# RN-01 - Temporizador de manutencao
+### RN-01 - Temporizador de manutencao
 A contagem de dias e calculada como: proxima_manutencao - data_atual (em dias inteiros). O status e determinado da seguinte forma:
 Ok: mais de 30 dias restantes - indicador verde
 Atencao: entre 1 e 30 dias restantes - indicador amarelo
 Vencido: data ja passou - indicador vermelho
 
-# RN-02 - Vinculo obrigatorio aparelho-cliente
+### RN-02 - Vinculo obrigatorio aparelho-cliente
 Todo aparelho deve estar vinculado a um cliente ativo. Nao e possivel cadastrar aparelhos sem selecionar um cliente.
 
-# RN-03 - Historico imutavel de manutencoes
+### RN-03 - Historico imutavel de manutencoes
 Registros de manutencoes concluidas nao podem ser excluidos, apenas editados pelo tecnico, garantindo a integridade do historico de servicos prestados.
 
