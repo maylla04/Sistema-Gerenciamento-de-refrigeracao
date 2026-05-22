@@ -10,7 +10,7 @@ O sistema deve listar todos os aparelhos de um cliente com seus respectivos stat
 O sistema deve permitir registrar uma manutencao realizada, informando aparelho, data, tipo de servico e proxima data prevista. \
 O sistema deve exibir o historico completo de manutencoes por aparelho. \
 O sistema deve calcular automaticamente os dias restantes ate a proxima manutencao e classificar o status em: Ok, Atencao ou Vencido. \
-O sistema deve exibir alertas visuais no dashboard para aparelhos com manutencao proxima ou vencida. \
+O sistema deve exibir listagem na dashboard para aparelhos por ordem de aproximidade. \
 O sistema deve exibir um painel resumo com total de clientes, aparelhos ativos e aparelhos com alerta, listando os com manutencao mais proxima. 
 
 
