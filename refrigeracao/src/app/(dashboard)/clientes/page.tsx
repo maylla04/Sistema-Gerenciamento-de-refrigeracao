@@ -64,12 +64,12 @@ export default function ClientesPage() {
           <p className="text-gray-500 mt-1">Gerencie seus clientes cadastrados.</p>
         </div>
         <Dialog open={open} onOpenChange={setOpen}>
-          <DialogTrigger>
-            <Button className="flex items-center gap-2">
+          
+            <Button className="flex items-center gap-2" onClick={() => setOpen(true)}>
               <Plus size={16} />
               Novo Cliente
             </Button>
-          </DialogTrigger>
+          
           <DialogContent>
             <DialogHeader>
               <DialogTitle>Cadastrar Cliente</DialogTitle>

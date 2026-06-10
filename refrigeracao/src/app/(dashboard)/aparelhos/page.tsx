@@ -61,7 +61,7 @@ export default function AparelhosPage() {
         </div>
         <Dialog open={open} onOpenChange={setOpen}>
           
-            <Button className="flex items-center gap-2">
+            <Button className="flex items-center gap-2" onClick={() => setOpen(true)}>
               <Plus size={16} />
               Novo Aparelho
             </Button>

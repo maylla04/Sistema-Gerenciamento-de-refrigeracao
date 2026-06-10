@@ -81,11 +81,10 @@ export default function ManutencoesPage() {
           <p className="text-gray-500 mt-1">Registre e acompanhe as manutenções.</p>
         </div>
         <Dialog open={open} onOpenChange={setOpen}>
-          
-            <Button className="flex items-center gap-2">
-              <Plus size={16} />
-              Nova Manutenção
-            </Button>
+  <Button className="flex items-center gap-2" onClick={() => setOpen(true)}>
+    <Plus size={16} />
+    Nova Manutenção
+  </Button>
     
           <DialogContent>
             <DialogHeader>
