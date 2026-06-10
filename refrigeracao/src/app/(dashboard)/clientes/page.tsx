@@ -64,7 +64,7 @@ export default function ClientesPage() {
           <p className="text-gray-500 mt-1">Gerencie seus clientes cadastrados.</p>
         </div>
         <Dialog open={open} onOpenChange={setOpen}>
-          <DialogTrigger asChild>
+          <DialogTrigger>
             <Button className="flex items-center gap-2">
               <Plus size={16} />
               Novo Cliente
