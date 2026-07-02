@@ -2,8 +2,24 @@ import { FastifyPluginAsync } from "fastify";
 import { z } from "zod";
 import { prisma } from "@/lib/db";
 
+const paramsSchema = z.object({
+  id: z.string().min(1),
+});
+
+const createEquipmentSchema = z.object({
+  nome: z.string().min(1),
+  modelo: z.string().min(1),
+  localizacao: z.string().min(1),
+  userId: z.string().min(1),
+});
+
+const updateEquipmentSchema = z.object({
+  nome: z.string().min(1),
+  modelo: z.string().min(1),
+  localizacao: z.string().min(1),
+});
+
 export const equipmentRoutes: FastifyPluginAsync = async (app) => {
-  // Listar todos os equipamentos
   app.get("/equipments", async () => {
     return prisma.equipment.findMany({
       include: {
@@ -13,12 +29,7 @@ export const equipmentRoutes: FastifyPluginAsync = async (app) => {
     });
   });
 
-  // Buscar equipamento por ID
   app.get("/equipments/:id", async (request, reply) => {
-    const paramsSchema = z.object({
-      id: z.string(),
-    });
-
     const { id } = paramsSchema.parse(request.params);
 
     const equipment = await prisma.equipment.findUnique({
@@ -38,16 +49,18 @@ export const equipmentRoutes: FastifyPluginAsync = async (app) => {
     return equipment;
   });
 
-  // Cadastrar equipamento
   app.post("/equipments", async (request, reply) => {
-    const bodySchema = z.object({
-      nome: z.string(),
-      modelo: z.string(),
-      localizacao: z.string(),
-      userId: z.string(),
+    const body = createEquipmentSchema.parse(request.body);
+
+    const user = await prisma.user.findUnique({
+      where: { id: body.userId },
     });
 
-    const body = bodySchema.parse(request.body);
+    if (!user) {
+      return reply.status(404).send({
+        message: "Usuário não encontrado.",
+      });
+    }
 
     const equipment = await prisma.equipment.create({
       data: body,
@@ -56,18 +69,19 @@ export const equipmentRoutes: FastifyPluginAsync = async (app) => {
     return reply.status(201).send(equipment);
   });
 
-  // Atualizar equipamento
   app.put("/equipments/:id", async (request, reply) => {
-     const { id } = request.params as { id: string };
+    const { id } = paramsSchema.parse(request.params);
+    const body = updateEquipmentSchema.parse(request.body);
 
-
-    const bodySchema = z.object({
-      nome: z.string(),
-      modelo: z.string(),
-      localizacao: z.string(),
+    const equipmentExists = await prisma.equipment.findUnique({
+      where: { id },
     });
 
-    const body = bodySchema.parse(request.body);
+    if (!equipmentExists) {
+      return reply.status(404).send({
+        message: "Equipamento não encontrado.",
+      });
+    }
 
     const equipment = await prisma.equipment.update({
       where: { id },
@@ -77,9 +91,18 @@ export const equipmentRoutes: FastifyPluginAsync = async (app) => {
     return equipment;
   });
 
-  // Excluir equipamento
   app.delete("/equipments/:id", async (request, reply) => {
-     const { id } = request.params as { id: string };
+    const { id } = paramsSchema.parse(request.params);
+
+    const equipmentExists = await prisma.equipment.findUnique({
+      where: { id },
+    });
+
+    if (!equipmentExists) {
+      return reply.status(404).send({
+        message: "Equipamento não encontrado.",
+      });
+    }
 
     await prisma.equipment.delete({
       where: { id },
