@@ -1,13 +1,89 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Get a free hosted Postgres database in seconds: `npx create-db`
-
 generator client {
-  provider = "prisma-client"
+  provider = "prisma-client-js"
   output   = "../src/generated/prisma"
 }
 
 datasource db {
   provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id              String    @id
+  name            String
+  email           String    @unique
+  emailVerified   Boolean
+  image           String?
+  createdAt       DateTime
+  updatedAt       DateTime
+
+  accounts        Account[]
+  sessions        Session[]
+
+  equipamentos    Equipment[]
+}
+
+model Session {
+  id           String   @id
+  expiresAt    DateTime
+  token        String   @unique
+  createdAt    DateTime
+  updatedAt    DateTime
+  ipAddress    String?
+  userAgent    String?
+
+  userId       String
+  user         User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Account {
+  id                    String   @id
+  accountId             String
+  providerId            String
+
+  userId                String
+  user                  User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  accessToken           String?
+  refreshToken          String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  idToken               String?
+  password              String?
+
+  createdAt             DateTime
+  updatedAt             DateTime
+}
+
+model Verification {
+  id         String   @id
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime?
+  updatedAt  DateTime?
+}
+
+model Equipment {
+  id            String   @id @default(uuid())
+  nome          String
+  modelo        String
+  localizacao   String
+  createdAt     DateTime @default(now())
+
+  userId        String
+  user          User @relation(fields: [userId], references: [id])
+
+  manutencoes   Maintenance[]
+}
+
+model Maintenance {
+  id            String   @id @default(uuid())
+  descricao     String
+  data          DateTime
+  createdAt     DateTime @default(now())
+
+  equipmentId   String
+  equipment     Equipment @relation(fields: [equipmentId], references: [id])
 }
